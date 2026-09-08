@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 식단이 궁금하십니까?</title>
+    <style>
+        :root {
+            --primary-color: #e65100;
+            --primary-light: #fff3e0;
+            --background-color: #f8f9fa;
+            --card-color: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: var(--card-color);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        /* 1. 일주일 날짜/요일 선택 (5일 주간) */
+        .week-selector {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .day-card {
+            flex: 1;
+            padding: 12px 5px;
+            background: #f1f3f5;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .day-card:hover {
+            background: var(--primary-light);
+        }
+
+        .day-card.active {
+            background: var(--primary-light);
+            border-color: var(--primary-color);
+        }
+
+        .day-card .date {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .day-card .day-name {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .day-card.active .day-name {
+            color: var(--primary-color);
+        }
+
+        /* 2. 조식/중식/석식 탭 버튼 */
+        .meal-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        /* 3. 식단 내용 표시 영역 */
+        .meal-display-card {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 220px;
+        }
+
+        .display-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #444;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 8px;
+        }
+
+        .menu-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .menu-list li {
+            font-size: 1.05rem;
+            padding: 6px 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-list li::before {
+            content: '•';
+            color: var(--primary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1rem;
+        }
+
+        /* 플러스바 및 기타 안내 */
+        .plus-bar-info {
+            background-color: #fff3e0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #e65100;
+            margin-top: 10px;
+        }
+
+        /* 마지막 인사 문구 */
+        .enjoy-msg {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            padding: 10px;
+            background-color: #fff8e1;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>오늘의 식단이 궁금하십니까?</h1>
+
+    <!-- 1. 일주일 날짜/요일 선택 버튼 (월~금) -->
+    <div class="week-selector">
+        <div class="day-card" onclick="selectDate(0)">
+            <div class="date">9월 7일</div>
+            <div class="day-name">월요일</div>
+        </div>
+        <div class="day-card" onclick="selectDate(1)">
+            <div class="date">9월 8일</div>
+            <div class="day-name">화요일</div>
+        </div>
+        <div class="day-card" onclick="selectDate(2)">
+            <div class="date">9월 9일</div>
+            <div class="day-name">수요일</div>
+        </div>
+        <div class="day-card" onclick="selectDate(3)">
+            <div class="date">9월 10일</div>
+            <div class="day-name">목요일</div>
+        </div>
+        <div class="day-card" onclick="selectDate(4)">
+            <div class="date">9월 11일</div>
+            <div class="day-name">금요일</div>
+        </div>
+    </div>
+
+    <!-- 2. 조식 / 중식 / 석식 탭 -->
+    <div class="meal-tabs">
+        <button class="tab-btn" onclick="selectMeal('breakfast')">🌅 조식</button>
+        <button class="tab-btn" onclick="selectMeal('lunch')">☀️ 중식</button>
+        <button class="tab-btn" onclick="selectMeal('dinner')">🌙 석식</button>
+    </div>
+
+    <!-- 3. 식단 출력 영역 -->
+    <div class="meal-display-card">
+        <div class="display-title" id="displayTitle">날짜와 식대를 선택해 주세요.</div>
+        <ul class="menu-list" id="menuList">
+            <!-- 식단 항목 들어가는 곳 -->
+        </ul>
+        <div class="plus-bar-info" id="plusBarInfo" style="display: none;"></div>
+    </div>
+
+    <!-- 4. 하단 문구 -->
+    <div class="enjoy-msg">
+        🎉 맛있게 드세요! 😋
+    </div>
+</div>
+
+<script>
+    // 이미지 기반 식단 데이터
+    const mealData = [
+        {
+            date: "9월 7일",
+            day: "월요일",
+            breakfast: {
+                main: ["바지락된장찌개", "쌀밥", "순살행구이", "아몬드멸치볶음", "어채볶음", "포기김치"],
+                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
+            },
+            lunch: {
+                main: ["[쿡방MENU] 뚝배기 순대전골", "쌀밥", "오징어초무침", "검은깨부추전", "건새우마늘종볶음", "깻잎무침", "야채스틱 / 석박지"],
+                plus: "작두콩차"
+            },
+            dinner: {
+                main: ["장어한마리덮밥", "팽이장국", "계란찜", "일식샐러드", "락교무침", "깍두기"],
+                plus: "자율라면 & 토핑"
+            }
+        },
+        {
+            date: "9월 8일",
+            day: "화요일",
+            breakfast: {
+                main: ["닭개장", "쌀밥", "스크램블에그", "연근땅콩조림", "열무된장나물", "깍두기 / 누룽지"],
+                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
+            },
+            lunch: {
+                main: ["중화비빔밥*계란후라이", "탕파국", "가라아게유린기", "복주머니덤섬", "꽃맛살샐러드", "갓절임", "포기김치"],
+                plus: "디톡스그린 & 라임워터"
+            },
+            dinner: {
+                main: ["치즈부대찌개", "쌀밥", "간장제육불고기", "고구마순들깨볶음", "오복채무침", "아주까리나물", "깍두기"],
+                plus: "자율라면 & 토핑"
+            }
+        },
+        {
+            date: "9월 9일",
+            day: "수요일",
+            breakfast: {
+                main: ["홍합어묵탕", "쌀밥", "참치김치볶음", "새송이야채볶음", "꼬시래기두부무침", "포기김치"],
+                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
+            },
+            lunch: {
+                main: ["잔치국수", "충무김밥", "삼겹수육 & 파채무침", "메밀전병", "무말랭이무침", "양파장아찌", "배추겉절이김치"],
+                plus: "민들레차"
+            },
+            dinner: {
+                main: ["곤드레영양밥*양념장", "콩비지찌개", "훈제오리구이", "표고버섯탕수", "고들빼기무침", "얼갈이나물", "포기김치"],
+                plus: "자율라면 & 토핑"
+            }
+        },
+        {
+            date: "9월 10일",
+            day: "목요일",
+            breakfast: {
+                main: ["설렁탕", "쌀밥", "찢은돈채장조림", "도라지야채무침", "갓절임", "석박지 / 누룽지"],
+                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
+            },
+            lunch: {
+                main: ["현대옥황태콩나물국밥", "귀리밥", "바싹불고기", "동부묵김가루무침", "미역줄기볶음", "아삭이고추무침", "오징어젓 / 깍두기"],
+                plus: "브라이트자몽 & 로즈마리워터"
+            },
+            dinner: {
+                main: ["마늘순살닭볶음탕", "쌀밥", "미역국", "비빔만두", "가지나물", "공심채절임", "깍두기"],
+                plus: "자율라면 & 토핑"
+            }
+        },
+        {
+            date: "9월 11일",
+            day: "금요일",
+            breakfast: {
+                main: ["경상도식쇠고기무국", "쌀밥", "메추리알조림", "브로콜리숙회", "깻잎무침", "포기김치"],
+                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
+            },
+            lunch: {
+                main: ["소불고기버섯전골", "차조밥", "언양식떡갈비 & 부추무침", "한식두부조림", "감자채볶음", "오이깍뚝무침", "알마늘지 / 석박지"],
+                plus: "돼지감자차"
+            },
+            dinner: {
+                main: ["운영 없음 (주간 식단표 기준)"],
+                plus: ""
+            }
+        }
+    ];
+
+    // 현재 선택 상태 (기본값: 월요일, 중식)
+    let selectedDateIndex = 0; 
+    let selectedMealType = 'lunch';
+
+    // 초기화
+    window.onload = () => {
+        updateUI();
+    };
+
+    // 날짜 클릭 시
+    function selectDate(index) {
+        selectedDateIndex = index;
+        updateUI();
+    }
+
+    // 식대(조식/중식/석식) 클릭 시
+    function selectMeal(type) {
+        selectedMealType = type;
+        updateUI();
+    }
+
+    // UI 업데이트 함수
+    function updateUI() {
+        const dayCards = document.querySelectorAll('.day-card');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const displayTitle = document.getElementById('displayTitle');
+        const menuList = document.getElementById('menuList');
+        const plusBarInfo = document.getElementById('plusBarInfo');
+
+        // 1. 날짜 버튼 활성화
+        dayCards.forEach((card, idx) => {
+            if (idx === selectedDateIndex) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+        });
+
+        // 2. 탭 버튼 활성화
+        const mealTypeMap = { breakfast: 0, lunch: 1, dinner: 2 };
+        tabBtns.forEach((btn, idx) => {
+            if (idx === mealTypeMap[selectedMealType]) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // 3. 식단 데이터 가져오기
+        const currentDayData = mealData[selectedDateIndex];
+        const mealTypeName = selectedMealType === 'breakfast' ? '조식' : selectedMealType === 'lunch' ? '중식' : '석식';
+        
+        // 제목 업데이트
+        displayTitle.innerText = `${currentDayData.date} (${currentDayData.day}) - ${mealTypeName}`;
+
+        // 메뉴 목록 업데이트
+        const selectedMealData = currentDayData[selectedMealType];
+        menuList.innerHTML = '';
+
+        if (selectedMealData && selectedMealData.main.length > 0) {
+            selectedMealData.main.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                menuList.appendChild(li);
+            });
+
+            // 플러스바 정보 업데이트
+            if (selectedMealData.plus) {
+                plusBarInfo.style.display = 'block';
+                plusBarInfo.innerHTML = `<strong>✨ 플러스바/음료:</strong> ${selectedMealData.plus}`;
+            } else {
+                plusBarInfo.style.display = 'none';
+            }
+        } else {
+            const li = document.createElement('li');
+            li.innerText = "등록된 식단이 없습니다.";
+            menuList.appendChild(li);
+            plusBarInfo.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
