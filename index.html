@@ -162,16 +162,6 @@
             width: 1rem;
         }
 
-        /* 공휴일/미운영 표시 스타일 */
-        .holiday-notice {
-            color: #d32f2f !important;
-            font-weight: bold;
-        }
-
-        .holiday-notice::before {
-            content: '🚩' !important;
-        }
-
         /* 플러스바 및 기타 안내 */
         .plus-bar-info {
             background-color: #fff3e0;
@@ -203,23 +193,23 @@
     <!-- 1. 일주일 날짜/요일 선택 버튼 (월~금) -->
     <div class="week-selector">
         <div class="day-card" onclick="selectDate(0)">
-            <div class="date">10월 5일</div>
+            <div class="date">10월 12일</div>
             <div class="day-name">월요일</div>
         </div>
         <div class="day-card" onclick="selectDate(1)">
-            <div class="date">10월 6일</div>
+            <div class="date">10월 13일</div>
             <div class="day-name">화요일</div>
         </div>
         <div class="day-card" onclick="selectDate(2)">
-            <div class="date">10월 7일</div>
+            <div class="date">10월 14일</div>
             <div class="day-name">수요일</div>
         </div>
         <div class="day-card" onclick="selectDate(3)">
-            <div class="date">10월 8일</div>
+            <div class="date">10월 15일</div>
             <div class="day-name">목요일</div>
         </div>
         <div class="day-card" onclick="selectDate(4)">
-            <div class="date">10월 9일</div>
+            <div class="date">10월 16일</div>
             <div class="day-name">금요일</div>
         </div>
     </div>
@@ -247,98 +237,92 @@
 </div>
 
 <script>
-    // 새 이미지 기반 식단 데이터 (2026.10.05 ~ 2026.10.09)
+    // 새 이미지 기반 식단 데이터 (2026.10.12 ~ 2026.10.16)
     const mealData = [
         {
-            date: "10월 5일",
+            date: "10월 12일",
             day: "월요일",
             breakfast: {
-                main: ["개천절 대체공휴일 미운영"],
-                plus: "",
-                isHoliday: true
-            },
-            lunch: {
-                main: ["개천절 대체공휴일 미운영"],
-                plus: "",
-                isHoliday: true
-            },
-            dinner: {
-                main: ["개천절 대체공휴일 미운영"],
-                plus: "",
-                isHoliday: true
-            }
-        },
-        {
-            date: "10월 6일",
-            day: "화요일",
-            breakfast: {
-                main: ["사골우거지국", "쌀밥", "떡갈비조림", "명엽채볶음", "마늘쫑절임", "포기김치 / 누룽지"],
+                main: ["우거지해장국", "쌀밥", "찢은돈채장조림", "잡채말이어묵튀김", "고사리나물", "깍두기"],
                 plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
             },
             lunch: {
-                main: ["[브랜드DAY] 이태리부대찌개", "쌀밥", "콘생선까스", "계란장조림", "감자채볶음", "콩나물겨자채", "깍두기"],
+                main: ["감탄 돼지국밥", "쌀밥", "명란떡갈비*참나물", "김치전", "새송이브로콜리숙회", "부추겉절이", "석박지"],
+                plus: "우엉차"
+            },
+            dinner: {
+                main: ["뼈없는닭갈비", "쌀밥", "재첩콩나물국", "오징어링튀김*머스타드", "청포묵김가루무침", "모듬쌈*쌈장", "포기김치"],
+                plus: "셀프라면 & 토핑"
+            }
+        },
+        {
+            date: "10월 13일",
+            day: "화요일",
+            breakfast: {
+                main: ["쇠고기두부탕국", "쌀밥", "메추리알곤약조림", "꼬시래기초무침", "우엉조림", "포기김치 / 누룽지"],
+                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
+            },
+            lunch: {
+                main: ["소고기콩나물밥*양념장", "유채된장국", "훈제오리구이*구운야채", "두부조림", "목이버섯냉채", "깻잎무침", "포기김치"],
+                plus: "릴렉스레몬 & 타임워터"
+            },
+            dinner: {
+                main: ["[브랜드DAY] 우리할매떡볶이", "후리가케주먹밥", "맑은우동국물", "분식튀김(야채*김말이)", "단무지", "포기김치", "요구르트"],
+                plus: "셀프라면 & 토핑"
+            }
+        },
+        {
+            date: "10월 14일",
+            day: "수요일",
+            breakfast: {
+                main: ["홍합살미역국", "쌀밥", "햄구이", "진미채양배추무침", "마늘쫑절임", "포기김치"],
+                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
+            },
+            lunch: {
+                main: ["이북식닭개장*다대기", "잡곡밥", "조기구이", "한돈육전", "치커리유자청무침", "갓절임", "깍두기"],
                 plus: "작두콩차"
             },
             dinner: {
-                main: ["치킨마요덮밥", "어묵국", "쫄면야채무침", "고구마옥수수맛탕", "단무지", "포기김치", "요구르트"],
+                main: ["숯불고기옥수수비빔밥", "유부장국", "해물완자전", "한식잡채", "묵말랭이볶음", "파래김*양념장", "열무김치"],
                 plus: "셀프라면 & 토핑"
             }
         },
         {
-            date: "10월 7일",
-            day: "수요일",
-            breakfast: {
-                main: ["참치김치찌개", "쌀밥", "제육불고기", "파래자반볶음", "오이지양파무침", "깍두기"],
-                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
-            },
-            lunch: {
-                main: ["마파두부덮밥", "계란파국", "고추잡채*꽃빵", "가지탕수", "짜사이무침", "브로콜리흑임자무침", "포기김치"],
-                plus: "안티에이징블루베리 & 민트워터"
-            },
-            dinner: {
-                main: ["수제비보양장어탕", "쌀밥", "너비아니구이", "새송이야채볶음", "부추겉절이", "야채스틱*쌈장", "석박지"],
-                plus: "셀프라면 & 토핑"
-            }
-        },
-        {
-            date: "10월 8일",
+            date: "10월 15일",
             day: "목요일",
             breakfast: {
-                main: ["북어채해장국", "쌀밥", "찢은돈채장조림", "도라지야채무침", "모듬콩조림", "포기김치 / 누룽지"],
+                main: ["돼지고기김치찌개", "쌀밥", "계란말이*케찹", "연근땅콩조림", "다래순나물", "깍두기 / 누룽지"],
                 plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
             },
             lunch: {
-                main: ["청양풍볶음우동", "유부초밥", "미소장국", "아몬드크림새우", "갈비만두", "무비트피클", "포기김치"],
-                plus: "민들레차"
+                main: ["북창동순두부찌개", "잡곡밥", "제육불고기", "보리새우미나리전", "가마보꼬어묵볶음", "무말랭이무침", "포기김치"],
+                plus: "부스트오렌지 & 바질워터"
+            },
+            dinner: {
+                main: ["감자옹심이", "쌀밥", "오징어볶음*콩나물사리", "고로케*케찹", "견과류멸치볶음", "오복채무침", "포기김치"],
+                plus: "셀프라면 & 토핑"
+            }
+        },
+        {
+            date: "10월 16일",
+            day: "금요일",
+            breakfast: {
+                main: ["북어채해장국", "쌀밥", "너비아니구이", "더덕오이무침", "얼갈이된장무침", "포기김치"],
+                plus: "토스트 / 콘후레이크 / 우유 / 샐러드"
+            },
+            lunch: {
+                main: ["차슈시오라멘", "야채볶음밥 1/2", "블랙돈까스*소스", "복주머니덤섬", "락교*산고추지", "포기김치", "일식샐러드"],
+                plus: "돼지감자차"
             },
             dinner: {
                 main: ["운영 없음 (주간 식단표 기준)"],
                 plus: ""
             }
-        },
-        {
-            date: "10월 9일",
-            day: "금요일",
-            breakfast: {
-                main: ["한글날 미운영"],
-                plus: "",
-                isHoliday: true
-            },
-            lunch: {
-                main: ["한글날 미운영"],
-                plus: "",
-                isHoliday: true
-            },
-            dinner: {
-                main: ["한글날 미운영"],
-                plus: "",
-                isHoliday: true
-            }
         }
     ];
 
-    // 현재 선택 상태 (기본값: 오늘 요일 기준 또는 화요일)
-    let selectedDateIndex = 1; // 10/6(화) 기본 선택
+    // 현재 선택 상태 (기본값: 월요일, 중식)
+    let selectedDateIndex = 0; 
     let selectedMealType = 'lunch';
 
     // 초기화
@@ -400,9 +384,6 @@
             selectedMealData.main.forEach(item => {
                 const li = document.createElement('li');
                 li.innerText = item;
-                if (selectedMealData.isHoliday) {
-                    li.classList.add('holiday-notice');
-                }
                 menuList.appendChild(li);
             });
 
